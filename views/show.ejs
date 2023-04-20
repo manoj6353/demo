@@ -10,6 +10,12 @@
 </head>
 
 <body>
+  <div class="search">
+    <form action="search" method="POST">
+      <input type="text" name="search" placeholder="Search">
+      <input type="submit" name="search" value="search">
+    </form>
+  </div>
   <table>
     <tr>
       <th><a href="/show?page=<%=page%>&sort=id&typ=<%=typ%>">ID</a></th>
