@@ -1,8 +1,7 @@
 const { request } = require('express');
 const {Sequelize, DataTypes, Model} = require ('sequelize');
-const sequelize = new Sequelize('demo','root','',{
+const sequelize = new Sequelize('demo','root','root',{
     host : 'localhost',
-    logging : false,
     dialect: 'mysql'
 });
 

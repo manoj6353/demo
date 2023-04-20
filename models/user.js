@@ -12,9 +12,13 @@ user.init({
     email :{
         type : DataTypes.STRING,
         allowNull : false
-    }
+    },
+    deletedAt :{
+        type : DataTypes.
+    },
     },{
         sequelize,
+        peranoid : true,
         modelName : 'user'
     })
     return user;

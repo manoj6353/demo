@@ -1,10 +1,19 @@
-var db = require('../models');
+var db = require("../models");
+const faker = require("faker");
 var User = db.user;
-console.log(db.user);
-var adduser = async (req,res) => {
-    const manoj = await User.create({firstName : 'manoj', lastName :'bajiya', email : 'manoj@gmail.com'});
-    // const manoj = user.build({firstName : 'manoj', lastName : 'bajiya'});
-    // await manoj.save();
-    res.status(200).json(manoj.toJSON());
+var adduser = async (req, res) => {
+  var data = [];
+  for (let i = 0; i < 10; i++) {
+    const insertdata = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    data.push(insertdata);
 }
-module.exports ={adduser}
+await User.bulkCreate(data);
+  // res.status(200).json(manoj.toJSON());
+};
+module.exports = { adduser };
