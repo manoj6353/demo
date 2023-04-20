@@ -1,23 +1,24 @@
-const { request } = require('express');
-const {Sequelize, DataTypes, Model} = require ('sequelize');
-const sequelize = new Sequelize('demo','root','root',{
-    host : 'localhost',
-    dialect: 'mysql'
+const { request } = require("express");
+const { Sequelize, DataTypes, Model } = require("sequelize");
+const sequelize = new Sequelize("demo", "root", "root", {
+  host: "localhost",
+  logging : false,
+  dialect: "mysql",
 });
 
-try{
-    sequelize.authenticate();
-        console.log("connection successfully");
-}catch(err){
-    console.log(err);
+try {
+  sequelize.authenticate();
+  console.log("connection successfully");
+} catch (err) {
+  console.log(err);
 }
 
 const db = {};
 db.Sequelize = Sequelize;
-db.sequelize=sequelize;
+db.sequelize = sequelize;
 
-db.contact = require('./contact')(sequelize,DataTypes);
-db.user = require('./user')(sequelize,DataTypes,Model)
-db.sequelize.sync()
+db.contact = require("./contact")(sequelize, DataTypes);
+db.user = require("./user")(sequelize, DataTypes, Model);
+db.sequelize.sync({ alter: true });
 
-module.exports=db;
+module.exports = db;

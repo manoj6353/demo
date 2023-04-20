@@ -3,7 +3,7 @@ const faker = require("faker");
 var User = db.user;
 var adduser = async (req, res) => {
   var data = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 1000; i++) {
     const insertdata = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
