@@ -5,10 +5,12 @@ module.exports = (sequelize, DataTypes, Model) => {
       firstName: {
         type: DataTypes.STRING,
         allowNull: false,
+        underscored: true,
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: false,
+        underscored: true,
       },
       email: {
         type: DataTypes.STRING,
@@ -16,6 +18,11 @@ module.exports = (sequelize, DataTypes, Model) => {
       },
       deletedAt: {
         type: DataTypes.DATE,
+        allowNull: true,
+      },
+      isActive: {
+        type: DataTypes.ENUM,
+        values : ['panding','complete'],
         allowNull: true,
       },
     },

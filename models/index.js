@@ -1,9 +1,19 @@
 const { request } = require("express");
 const { Sequelize, DataTypes, Model } = require("sequelize");
+// const sequelize = new Sequelize("demo", "root", "root", {
+//   host: "localhost",
+//   logging : false,
+//   dialect: "mysql",
+// });
 const sequelize = new Sequelize("demo", "root", "root", {
   host: "localhost",
-  logging : false,
+  logging: false,
   dialect: "mysql",
+  pool: {
+    max: 5,
+    min: 0,
+    idle: 100,
+  },
 });
 
 try {
@@ -16,9 +26,5 @@ try {
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-
-db.contact = require("./contact")(sequelize, DataTypes);
-db.user = require("./user")(sequelize, DataTypes, Model);
-db.sequelize.sync({ alter: true });
 
 module.exports = db;

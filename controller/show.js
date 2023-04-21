@@ -1,4 +1,5 @@
 var db = require("../models");
+// console.log(db.);
 var User = db.user;
 const show = async (req, res) => {
   var page = req.query.page || 1;
@@ -12,12 +13,17 @@ const show = async (req, res) => {
     where: { deletedAt: null },
     order: [[sort, typ]],
   });
+  // const [data] = await db.sequelize.query(
+  //   `SELECT * FROM users WHERE deletedAt IS NULL ORDER BY ${sort} ${typ} limit ${startindex}, ${endindex}`
+  // );
+  // console.log(data);
   const data = await User.findAll({
     where: { deletedAt: null },
     order: [[sort, typ]],
     limit: endindex,
     offset: startindex,
   });
+  // console.log("data", data);
   res.render("show.ejs", {
     data,
     total,
