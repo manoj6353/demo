@@ -18,26 +18,27 @@ let addstudent = async (req, res) => {
         firstName: FirstName,
         lastName: LastName,
       };
-      const contactdata = {
-        firstName: FirstName,
-        lastName: LastName,
-        email: internet.email(),
-        phone: phone.phoneNumber(),
-        student_id: studentId,
-      };
-      await student.bulkCreate(insertdata).then(
-        function (sid) {
-          student.findByPk(sid.id).then(function (result) {
-            console.log(result.dataValues.id[0]);
-            // studentId = result.dataValues;
-          });
-        },
-        { transaction: t }
-      );
-      // data.push(insertdata);
-      contact.push(contactdata);
+      // const contactdata = {
+      //   firstName: FirstName,
+      //   lastName: LastName,
+      //   email: internet.email(),
+      //   phone: phone.phoneNumber(),
+      //   student_id: studentId,
+      // };
+      // .then(
+        //   function (sid) {
+      //     student.findByPk(sid.id).then(function (result) {
+      //       console.log(result.dataValues.id[0]);
+      //       // studentId = result.dataValues;
+      //     });
+      //   },
+      //   { transaction: t }
+      // );
+      data.push(insertdata);
+      // contact.push(contactdata);
     }
-    // console.log(contact);
+    await student.bulkCreate(data)
+    console.log(data);
     // let std = await student.create(data, { transaction: t })
     //   .then(function (sid) {
     //     student.findOne(sid.id).then(function (result) {

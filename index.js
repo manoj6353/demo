@@ -19,6 +19,16 @@ app.use(express.static("public"));
 var studentcontrol = require("./controller/students");
 app.get("/student", studentcontrol.addstudent);
 
+const display = require("./controller/add");
+app.get('/show',display.showuser);
+app.get('/show/:id',display.showUser);
+app.post('/show',display.postuser);
+app.delete('/delete/:id',display.deleteuser);
+app.patch('/update/:id',display.updateuser);
+
+
+app.get('/query',display.getquery);
+
 // require("./models");
 
 app.listen(8234, () => {

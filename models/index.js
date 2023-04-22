@@ -44,9 +44,9 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize("demo", "root", "root", {
+  sequelize = new Sequelize("demo", "root", "", {
     host: "localhost",
-    logging: false,
+    // logging: false,
     dialect: "mysql",
     pool: {
       max: 5,
@@ -80,6 +80,6 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.student = require("./student")(sequelize, DataTypes);
-db.contact = require("./contact")(sequelize, DataTypes);
+// db.contact = require("./contact")(sequelize, DataTypes);
 
 module.exports = db;
