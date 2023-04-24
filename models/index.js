@@ -33,7 +33,13 @@
 ("use strict");
 const fs = require("fs");
 const path = require("path");
-const { Sequelize, DataTypes } = require("sequelize");
+const {
+  Sequelize,
+  DataTypes,
+  BelongsToMany,
+  HasMany,
+  BelongsTo,
+} = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/../config/config.json")[env];
@@ -46,7 +52,7 @@ if (config.use_env_variable) {
 } else {
   sequelize = new Sequelize("demo", "root", "", {
     host: "localhost",
-    // logging: false,
+    logging: false,
     dialect: "mysql",
     pool: {
       max: 5,
@@ -80,6 +86,11 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 db.student = require("./student")(sequelize, DataTypes);
+db.address = require("./address")(sequelize, DataTypes);
+
 // db.contact = require("./contact")(sequelize, DataTypes);
+
+db.address = BelongsTo(db.student, { foreignKey: student_id });
+db.student = HasMany(db.address);
 
 module.exports = db;

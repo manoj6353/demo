@@ -16,18 +16,22 @@ app.use(express.static("public"));
 // app.get("/del/:id", delcontrol.del);
 // app.post("/search", searchcontrol.search);
 
-var studentcontrol = require("./controller/students");
-app.get("/student", studentcontrol.addstudent);
+// var studentcontrol = require("./controller/students");
+// app.get("/student", studentcontrol.addstudent);
 
 const display = require("./controller/add");
-app.get('/show',display.showuser);
-app.get('/show/:id',display.showUser);
-app.post('/show',display.postuser);
-app.delete('/delete/:id',display.deleteuser);
-app.patch('/update/:id',display.updateuser);
 
+app.get("/insertstudent", display.InsertUser);
+app.get("/many-to-many", display.ManytoMany);
 
-app.get('/query',display.getquery);
+// app.get("/show", display.showuser);
+// app.get("/show/:id", display.showUser);
+// app.post("/show", display.postuser);
+// app.delete("/delete/:id", display.deleteuser);
+// app.patch("/update/:id", display.updateuser);
+
+app.get("/query", display.getquery);
+app.get("/relation", display.relation);
 
 // require("./models");
 
