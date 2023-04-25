@@ -10,32 +10,7 @@
       integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
       crossorigin="anonymous"
     />
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      .gradient-custom-4 {
-        background: #84fab0;
-        background: -webkit-linear-gradient(
-          to right,
-          rgba(132, 250, 176, 1),
-          rgba(143, 211, 244, 1)
-        );
-        background: linear-gradient(
-          to right,
-          rgba(132, 250, 176, 1),
-          rgba(143, 211, 244, 1)
-        );
-      }
-      .error {
-        color: red !important;
-      }
-      #register {
-        border: none !important;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/add.css" />
   </head>
   <body>
     <!--navbar starts-->
@@ -70,7 +45,9 @@
                         class="form-control form-control"
                         required
                         oninput="validation()"
+                        onchange="toupper()"
                       />
+                      <span id="firsterror"></span>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -82,7 +59,9 @@
                         class="form-control form-control"
                         required
                         oninput="validation()"
+                        onchange="toupper()"
                       />
+                      <span id="lasterror"></span>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -93,7 +72,9 @@
                         name="email"
                         class="form-control form-control"
                         required
+                        oninput="validation()"
                       />
+                      <span id="emailerror"></span>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -106,6 +87,7 @@
                         required
                         oninput="validation()"
                       />
+                      <span id="contacterror"></span>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -117,6 +99,7 @@
                         required
                         oninput="validation()"
                       ></textarea>
+                      <span id="addresserror"></span>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -126,27 +109,38 @@
                         id="state"
                         name="state"
                         required
+                        onchange="fetchcity()"
                       >
-                        <option value="Gujarat">Gujarat</option>
-                        <option value="Tamilnadu">Tamilnadu</option>
-                        <option value="Kerala">Kerala</option>
-                        <option value="Telangana">Telangana</option>
+                        <% state.forEach(s => { %>
+                        <option id="<%=s.id%>" value="<%=s.select_name%>">
+                          <%=s.select_name%>
+                        </option>
+                        <% }); %>
                       </select>
+                      <script>
+                        async function fetchcity() {
+                          let state = document.querySelector("#state");
+                          const result = await fetch(
+                            `fetch-city?id=${state.value}`
+                          );
+                          const data = await result.json();
+                          let opt = "";
+                          data.forEach((d) => {
+                            opt += `<option value="${d.option_master.option_name}">${d.option_master.option_name}</option>`;
+                            document.querySelector(".city").innerHTML = opt;
+                          });
+                        }
+                      </script>
                     </div>
 
                     <div class="form-outline mb-4">
                       <label class="form-label" for="city">City</label>
                       <select
-                        class="form-select"
+                        class="city form-select"
                         id="city"
                         name="city"
                         required
-                      >
-                        <option value="Bhavnagar">Bhavnagar</option>
-                        <option value="Chennai">Chennai</option>
-                        <option value="Kochi">Kochi</option>
-                        <option value="Bengaluru">Bengaluru</option>
-                      </select>
+                      ></select>
                     </div>
 
                     <div class="form-outline mb-4">
@@ -170,6 +164,7 @@
                           id="male"
                           value="Male"
                           required
+                          checked
                         />
                         <label class="form-check-label" for="male">
                           Male
@@ -224,35 +219,5 @@
       crossorigin="anonymous"
     ></script>
   </body>
-  <script>
-    function validation() {
-      let firstname = document.getElementById("firstName");
-      let lastname = document.getElementById("lastName");
-      let contact = document.getElementById("contact");
-      let address = document.getElementById("address");
-      const namepattern = /[0-9]/g;
-      const contactpattern = /(\+0?1\s)?\d{3}?\d{3}\d{4}$/;
-
-      if (firstname.value.match(namepattern)) {
-        firstname.classList.add("error");
-      } else {
-        firstname.classList.remove("error");
-      }
-      if (contact.value.match(contactpattern)) {
-        contact.classList.remove("error");
-      } else {
-        contact.classList.add("error");
-      }
-      if (address.value.match(namepattern)) {
-        address.classList.add("error");
-      } else {
-        address.classList.remove("error");
-      }
-      if (lastname.value.match(namepattern)) {
-        lastname.classList.add("error");
-      } else {
-        lastname.classList.remove("error");
-      }
-    }
-  </script>
+  <script src="/js/form.js"></script>
 </html>

@@ -11,6 +11,10 @@ var BasicDetails = require("./controller/add");
 
 app.get("/basic-form", BasicDetails.BasicForm);
 app.post("/basic-details", BasicDetails.BasicDetail);
+app.get("/state", BasicDetails.stateDetail);
+app.get("/fetch-city", BasicDetails.city);
+app.get("/pivot", BasicDetails.InsertPivot);
+app.get("/show", BasicDetails.show);
 
 app.listen(8234, () => {
   console.log("Running on 8234");

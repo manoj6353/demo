@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       dob: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
       },
       gender: {
         type: Sequelize.ENUM,
@@ -45,7 +45,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      delatedAt: {
+      deletedAt: {
         allowNull: true,
         type: Sequelize.DATE,
       },

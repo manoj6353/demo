@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <th>Full Name</th>
+        <th>Contact</th>
+        <th>Address</th>
+        <th>State</th>
+        <th>City</th>
+        <th>Email</th>
+        <th>DOB</th>
+        <th>Gender</th>
+      </tr>
+      <% basic.forEach(b=>{ %>
+      <tr>
+        <td><%= b.first_name%> <%= b.last_name%></td>
+        <td><%=b.contact_number%></td>
+        <td><%=b.full_address%></td>
+        <td><%=b.state%></td>
+        <td><%=b.city%></td>
+        <td><%=b.email%></td>
+        <td><%=(new Date(b.dob).toLocaleDateString())%></td>
+        <td><%=b.gender%></td>
+      </tr>
+      <% }) %>
+    </table>
+  </body>
+</html>
