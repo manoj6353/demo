@@ -2,25 +2,32 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("option_masters", {
+    await queryInterface.createTable("expriences", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      option_name: {
+      company_name: {
         type: Sequelize.STRING,
       },
-      select_id: {
+      designation: {
+        type: Sequelize.STRING,
+      },
+      start_date: {
+        type: Sequelize.DATE,
+      },
+      end_date: {
+        type: Sequelize.DATE,
+      },
+      candidate_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "select_masters",
+          model: "candidate_basics",
           key: "id",
         },
-        onDelete: "no action",
-        onUpdate: "no action",
       },
       createdAt: {
         allowNull: false,
@@ -30,13 +37,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      deletedAt: {
-        allowNull: true,
-        type: Sequelize.DATE,
-      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("option_masters");
+    await queryInterface.dropTable("expriences");
   },
 };

@@ -37,6 +37,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      active: {
+        type: Sequelize.ENUM,
+        values: ["success", "panding", "progress"],
+      },
     });
     // await queryInterface.addConstraint("select_options", {
     //   type: "FOREIGN KEY",

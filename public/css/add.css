@@ -22,3 +22,10 @@
 #register {
   border: none !important;
 }
+.gap
+{
+  gap:2rem;
+}
+.tab {
+  display: none;
+}

@@ -15,8 +15,14 @@ module.exports = (sequelize, DataTypes) => {
     {
       select_id: DataTypes.INTEGER,
       option_id: DataTypes.INTEGER,
+      active: DataTypes.ENUM("success", "panding", "progress"),
     },
     {
+      hooks: {
+        beforeCreate: (user, options) => {
+          user.active = "progress";
+        },
+      },
       sequelize,
       modelName: "select_option",
     }

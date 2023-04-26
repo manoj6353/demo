@@ -2,10 +2,14 @@ var db = require("../models/index");
 const { Op, DataTypes } = require("sequelize");
 const { name, internet, phone, address } = require("faker");
 const { sequelize } = require("../models/index");
-const Basic = require("../models/candidate_basic")(sequelize, DataTypes);
 const select_master = require("../models/select_master")(sequelize, DataTypes);
 const option_master = require("../models/option_master")(sequelize, DataTypes);
 const select_option = require("../models/select_option")(sequelize, DataTypes);
+const Basic = require("../models/candidate_basic")(sequelize, DataTypes);
+const Academic = require("../models/academic")(sequelize, DataTypes);
+const Exprience = require("../models/exprience")(sequelize, DataTypes);
+const Language = require("../models/language")(sequelize, DataTypes);
+const Technology = require("../models/technology")(sequelize, DataTypes);
 
 select_master.hasOne(option_master, { foreignKey: "select_id" });
 option_master.belongsTo(select_master, { foreignKey: "select_id" });
@@ -23,7 +27,7 @@ const InsertPivot = async (req, res) => {
     );
     const option = await option_master.create(
       {
-        option_name: address.cityName(),
+        option_name: "address.cityName()",
         select_id: select.dataValues.id,
       },
       { transaction: t }
@@ -36,7 +40,6 @@ const InsertPivot = async (req, res) => {
       { transaction: t }
     );
     await t.commit();
-    res.send(select_options);
   } catch (err) {
     await t.rollback();
     res.send(err);
@@ -80,7 +83,11 @@ const city = async (req, res) => {
 
 const BasicForm = async (req, res) => {
   const state = await select_master.findAll({});
-  res.render("form", { state });
+  const course = await select_master.findAll({
+    include: { model: option_master },
+    where: { id: 87 },
+  });
+  res.render("form", { state, course });
 };
 
 const BasicDetail = async (req, res) => {

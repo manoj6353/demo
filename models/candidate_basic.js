@@ -20,10 +20,6 @@ module.exports = (sequelize, DataTypes) => {
       city: DataTypes.STRING,
       state: DataTypes.STRING,
       email: DataTypes.STRING,
-      // gender: {
-      //   type: DataTypes.ENUM("Male", "Female", "Others"),
-      //   defaultValue: "Male",
-      // },
       gender: DataTypes.ENUM("Male", "Female", "Others"),
       dob: DataTypes.DATE,
     },
