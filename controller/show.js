@@ -1,6 +1,9 @@
 var db = require("../models");
 // console.log(db.);
 var User = db.user;
+
+User.addScope("");
+
 const show = async (req, res) => {
   var page = req.query.page || 1;
   var endindex = 10;

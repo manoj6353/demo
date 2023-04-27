@@ -22,13 +22,17 @@ module.exports = (sequelize, DataTypes, Model) => {
       },
       isActive: {
         type: DataTypes.ENUM,
-        values : ['panding','complete'],
+        values: ["panding", "complete"],
         allowNull: true,
       },
     },
     {
+      hooks: {
+        beforeCreate: (user, options) => {
+          user.active = "panding";
+        },
+      },
       sequelize,
-      paranoid: true,
       modelName: "user",
     }
   );
