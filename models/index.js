@@ -2,7 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes, Model } = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
@@ -50,5 +50,11 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
+
+db.Basic = require("./candidate_basic")(sequelize, DataTypes, Model);
+db.Academic = require("./academic")(sequelize, DataTypes, Model);
+db.Exprience = require("./exprience")(sequelize, DataTypes, Model);
+db.Language = require("./language")(sequelize, DataTypes, Model);
+db.Technology = require("./technology")(sequelize, DataTypes, Model);
 
 module.exports = db;

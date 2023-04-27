@@ -1,7 +1,7 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model, DataTypes, sequelize } = require("sequelize");
+// const Basic = require("./candidate_basic");
+const db = require("./index");
 module.exports = (sequelize, DataTypes) => {
   class academic extends Model {
     /**
@@ -13,15 +13,22 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  academic.init({
-    course: DataTypes.STRING,
-    board: DataTypes.STRING,
-    year: DataTypes.STRING,
-    percentage: DataTypes.STRING,
-    candidate_id: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'academic',
+  academic.init(
+    {
+      course: DataTypes.STRING,
+      board: DataTypes.STRING,
+      year: DataTypes.STRING,
+      percentage: DataTypes.STRING,
+      candidate_id: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "academic",
+    }
+  );
+  academic.belongsTo(db.Basic, {
+    foreignKey: "candidate_id",
+    constraints: false,
   });
   return academic;
 };

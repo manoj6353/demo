@@ -2,6 +2,7 @@ var db = require("../models/index");
 const { Op, DataTypes } = require("sequelize");
 const { name, internet, phone, address } = require("faker");
 const { sequelize } = require("../models/index");
+const academic = require("../models/academic");
 const select_master = require("../models/select_master")(sequelize, DataTypes);
 const option_master = require("../models/option_master")(sequelize, DataTypes);
 const select_option = require("../models/select_option")(sequelize, DataTypes);
@@ -13,6 +14,15 @@ const Technology = require("../models/technology")(sequelize, DataTypes);
 
 select_master.hasOne(option_master, { foreignKey: "select_id" });
 option_master.belongsTo(select_master, { foreignKey: "select_id" });
+
+// Basic.hasMany(Academic, { foreignKey: "candidate_id", constraints: false });
+// Academic.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+// Basic.hasMany(Exprience, { foreignKey: "candidate_id", constraints: false });
+// Exprience.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+// Basic.hasMany(Language, { foreignKey: "candidate_id", constraints: false });
+// Language.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+// Basic.hasMany(Technology, { foreignKey: "candidate_id", constraints: false });
+// Technology.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
 
 // sequelize.sync({ alter: true });
 
@@ -93,6 +103,7 @@ const BasicForm = async (req, res) => {
 const BasicDetail = async (req, res) => {
   const t = await db.sequelize.transaction();
   const { body } = req;
+  console.log(body);
   try {
     const basic = await Basic.create(
       {
@@ -108,6 +119,7 @@ const BasicDetail = async (req, res) => {
       },
       { transaction: t }
     );
+    const academic = await Academic.create({});
     await t.commit();
     res.redirect("show");
   } catch (err) {
