@@ -1,25 +1,25 @@
 var db = require("../models");
-const faker = require("faker");
+const { name, internet } = require("faker");
 var User = db.user;
+console.log(name.firstName());
 var adduser = async (req, res) => {
   try {
     var data = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 10; i++) {
       const insertdata = {
-        firstName: faker.name.firstName(),
-        lastName: faker.name.lastName(),
-        email: faker.internet.email(),
+        first_name: name.firstName(),
+        last_name: name.lastName(),
+        email: internet.email(),
         createdAt: new Date(),
         updatedAt: new Date(),
-        isActive: "complete",
       };
       data.push(insertdata);
     }
     await User.bulkCreate(data);
-    // res.status(200).json(manoj.toJSON());
+    // res.redirect("show");
+    res.send(data);
   } catch (err) {
-    res.send({ message: err.original.sqlMessage });
-    console.log(err.original.sqlMessage);
+    res.send(err);
   }
 };
 module.exports = { adduser };

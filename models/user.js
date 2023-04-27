@@ -1,35 +1,27 @@
-module.exports = (sequelize, DataTypes, Model) => {
-  class user extends Model {}
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class user extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
   user.init(
     {
-      firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        underscored: true,
-      },
-      lastName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        underscored: true,
-      },
-      email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      deletedAt: {
-        type: DataTypes.DATE,
-        allowNull: true,
-      },
-      isActive: {
-        type: DataTypes.ENUM,
-        values: ["panding", "complete"],
-        allowNull: true,
-      },
+      first_name: DataTypes.STRING,
+      last_name: DataTypes.STRING,
+      email: DataTypes.STRING,
+      isActive: DataTypes.ENUM("panding", "complete"),
     },
     {
       hooks: {
         beforeCreate: (user, options) => {
-          user.active = "panding";
+          user.isActive = "panding";
         },
       },
       sequelize,

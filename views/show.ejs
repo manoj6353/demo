@@ -1,101 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/table.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="/css/table.css">
-</head>
-
-<body>
-  <div class="search">
-    <form action="search" method="POST">
-      <input type="text" name="search" placeholder="Search">
-      <input type="submit" name="search" value="search">
-    </form>
-  </div>
-  <table>
-    <tr>
-      <th><a href="/show?page=<%=page%>&sort=id&typ=<%=typ%>">ID</a></th>
-      <th><a href="/show?page=<%=page%>&sort=firstName&typ=<%=typ%>">FirstName</a></th>
-      <th><a href="/show?page=<%=page%>&sort=lastName&typ=<%=typ%>">LastName</a></th>
-      <th><a href="/show?page=<%=page%>&sort=createdAt&typ=<%=typ%>">CreatedDate</a></th>
-      <th><a href="/show?page=<%=page%>&sort=updatedAt&typ=<%=typ%>">UpdatedDate</a></th>
-      <th><a href="/show?page=<%=page%>&sort=isActive&typ=<%=typ%>">IsActive</a></th>
-    </tr>
-    <% data.forEach(d=> { %>
+  <body>
+    <div class="search">
+      <form action="search" method="POST">
+        <input type="text" name="search" placeholder="Search" />
+        <input type="submit" name="search" value="search" />
+      </form>
+    </div>
+    <table>
       <tr>
-        <td>
-          <%= d.id %>
-        </td>
-        <td>
-          <%= d.firstName %>
-        </td>
-        <td>
-          <%= d.lastName %>
-        </td>
-        <td>
-          <%= (new Date(d.createdAt).toLocaleDateString()) %>
-        </td>
-        <td>
-          <%= (new Date(d.updatedAt).toLocaleDateString()) %>
-        </td>
-        <td>
-          <%= d.isActive %>
-        </td>
+        <th>
+          <a href="/show?page=<%=page%>&sort=first_name&typ=<%=typ%>"
+            >FirstName</a
+          >
+        </th>
+        <th>
+          <a href="/show?page=<%=page%>&sort=last_name&typ=<%=typ%>"
+            >LastName</a
+          >
+        </th>
+        <th>
+          <a href="/show?page=<%=page%>&sort=createdAt&typ=<%=typ%>"
+            >CreatedDate</a
+          >
+        </th>
+        <th>
+          <a href="/show?page=<%=page%>&sort=updatedAt&typ=<%=typ%>"
+            >UpdatedDate</a
+          >
+        </th>
+        <th>
+          <a href="/show?page=<%=page%>&sort=isActive&typ=<%=typ%>">IsActive</a>
+        </th>
+      </tr>
+      <% data.forEach(d=> { %>
+      <tr>
+        <td><%= d.first_name %></td>
+        <td><%= d.last_name %></td>
+        <td><%= (new Date(d.createdAt).toLocaleDateString()) %></td>
+        <td><%= (new Date(d.updatedAt).toLocaleDateString()) %></td>
+        <td><%= d.isActive %></td>
       </tr>
       <% }); %>
-
-  </table>
-  <nav aria-label="Page navigation example">
-    <ul class="pagination" id="pagination">
-      <li class="page-item"><a href="/show?page=<%=1%>&sort=<%=sort%>" class="page-link" id="0">
-          << </a>
-      </li>
-      <li class="page-item"><a href="/show?page=<% if(page!=1) { page-1 }%>&sort=<%=sort%>" class="page-link">
-          < </a>
-      </li>
-      <% if(parseInt(page) <=5) { %>
-        <% for(let i=1;i<=parseInt(page);i++){ %>
-          <li class="page-item"><a class="page-link 
-            <% if(parseInt(page)==i){ %>pageactive <% } %>" href="/show?page=<%=i%>&sort=<%=sort%>">
-              <%= i %>
-            </a>
-          </li>
-          <% } } else { %>
-            <% for(let i=(parseInt(page)-5);i<=parseInt(page);i++){ %>
-              <li class="page-item"><a class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
-                  href="/show?page=<%=i%>&sort=<%=sort%>">
-                  <%= i %>
-                </a>
-              </li>
-              <% } %>
-                <% } %>
-                  <% if(Math.ceil(parseInt(total)/parseInt(limit))-5>= parseInt(page)){ %>
-                    <% for(let i=parseInt(page)+1;i<=parseInt(page)+ 5;i++){ %>
-                      <li class="page-item"><a class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
-                          href="/show?page=<%=i%>&sort=<%=sort%>">
-                          <%= i %>
-                        </a></li>
-                      <% } %>
-                        <% } else { %>
-                          <% for(let i=parseInt(page)+1;i<=Math.ceil(parseInt(total)/parseInt(limit));i++){ %>
-                            <li class="page-item"><a class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
-                                href="/show?page=<%=i%>&sort=<%=sort%>">
-                                <%= i %>
-                              </a></li>
-                            <% } %>
-                              <% } %>
-                                <li class="page-item"><a class="page-link"
-                                    href="/show?page=<% if(page < Math.ceil(page/limit)) { page+1 }%>&sort=<%=sort%>"
-                                    id="<% if(page < Math.ceil(page/limit)) %><% { page+1 } %>%>">></a></li>
-                                <li class="page-item"><a class="page-link"
-                                    href="/show?page=<%=Math.ceil(total/limit)%>&sort=<%=sort%>">>></a>
-                                </li>
-    </ul>
-  </nav>
-</body>
-
+    </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination" id="pagination">
+        <li class="page-item">
+          <a href="/show?page=<%=1%>&sort=<%=sort%>" class="page-link" id="0">
+            <<
+          </a>
+        </li>
+        <li class="page-item">
+          <a
+            href="/show?page=<% if(page!=1) { page-1 }%>&sort=<%=sort%>"
+            class="page-link"
+          >
+            <
+          </a>
+        </li>
+        <% if(parseInt(page) <=5) { %> <% for(let i=1;i<=parseInt(page);i++){ %>
+        <li class="page-item">
+          <a
+            class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
+            href="/show?page=<%=i%>&sort=<%=sort%>"
+          >
+            <%= i %>
+          </a>
+        </li>
+        <% } } else { %> <% for(let i=(parseInt(page)-5);i<=parseInt(page);i++){
+        %>
+        <li class="page-item">
+          <a
+            class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
+            href="/show?page=<%=i%>&sort=<%=sort%>"
+          >
+            <%= i %>
+          </a>
+        </li>
+        <% } %> <% } %> <% if(Math.ceil(parseInt(total)/parseInt(limit))-5>=
+        parseInt(page)){ %> <% for(let i=parseInt(page)+1;i<=parseInt(page)+
+        5;i++){ %>
+        <li class="page-item">
+          <a
+            class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
+            href="/show?page=<%=i%>&sort=<%=sort%>"
+          >
+            <%= i %>
+          </a>
+        </li>
+        <% } %> <% } else { %> <% for(let
+        i=parseInt(page)+1;i<=Math.ceil(parseInt(total)/parseInt(limit));i++){
+        %>
+        <li class="page-item">
+          <a
+            class="page-link <% if(parseInt(page)==i){ %>pageactive <% } %>"
+            href="/show?page=<%=i%>&sort=<%=sort%>"
+          >
+            <%= i %>
+          </a>
+        </li>
+        <% } %> <% } %>
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="/show?page=<% if(page < Math.ceil(page/limit)) { page+1 }%>&sort=<%=sort%>"
+            id="<% if(page < Math.ceil(page/limit)) %><% { page+1 } %>%>"
+            >></a
+          >
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="/show?page=<%=Math.ceil(total/limit)%>&sort=<%=sort%>"
+            >>></a
+          >
+        </li>
+      </ul>
+    </nav>
+  </body>
 </html>
