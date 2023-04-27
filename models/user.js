@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       hooks: {
-        beforeCreate: (user, options) => {
-          user.isActive = "panding";
+        beforeCreate: (users, options) => {
+          users.isActive = "panding";
         },
       },
       sequelize,
