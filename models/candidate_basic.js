@@ -1,10 +1,5 @@
 "use strict";
-const { Model, sequelize, DataTypes } = require("sequelize");
-const db = require("./index");
-// const { Academic } = require("./academic");
-// const Exprience = require("./exprience");
-// const Language = require("./language");
-// const Technology = require("./technology");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class candidate_basic extends Model {
     /**
@@ -34,21 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "candidate_basic",
     }
   );
-  candidate_basic.hasMany(db.Academic, {
-    foreignKey: "candidate_id",
-    constraints: false,
-  });
-  candidate_basic.hasMany(db.Exprience, {
-    foreignKey: "candidate_id",
-    constraints: false,
-  });
-  candidate_basic.hasMany(db.Language, {
-    foreignKey: "candidate_id",
-    constraints: false,
-  });
-  candidate_basic.hasMany(db.Technology, {
-    foreignKey: "candidate_id",
-    constraints: false,
-  });
   return candidate_basic;
 };

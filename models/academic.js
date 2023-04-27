@@ -1,7 +1,5 @@
 "use strict";
-const { Model, DataTypes, sequelize } = require("sequelize");
-// const Basic = require("./candidate_basic");
-const db = require("./index");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class academic extends Model {
     /**
@@ -26,9 +24,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "academic",
     }
   );
-  academic.belongsTo(db.Basic, {
-    foreignKey: "candidate_id",
-    constraints: false,
-  });
   return academic;
 };

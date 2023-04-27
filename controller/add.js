@@ -15,14 +15,14 @@ const Technology = require("../models/technology")(sequelize, DataTypes);
 select_master.hasOne(option_master, { foreignKey: "select_id" });
 option_master.belongsTo(select_master, { foreignKey: "select_id" });
 
-// Basic.hasMany(Academic, { foreignKey: "candidate_id", constraints: false });
-// Academic.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
-// Basic.hasMany(Exprience, { foreignKey: "candidate_id", constraints: false });
-// Exprience.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
-// Basic.hasMany(Language, { foreignKey: "candidate_id", constraints: false });
-// Language.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
-// Basic.hasMany(Technology, { foreignKey: "candidate_id", constraints: false });
-// Technology.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+Basic.hasMany(Academic, { foreignKey: "candidate_id", constraints: false });
+Academic.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+Basic.hasMany(Exprience, { foreignKey: "candidate_id", constraints: false });
+Exprience.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+Basic.hasMany(Language, { foreignKey: "candidate_id", constraints: false });
+Language.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
+Basic.hasMany(Technology, { foreignKey: "candidate_id", constraints: false });
+Technology.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
 
 // sequelize.sync({ alter: true });
 
@@ -103,7 +103,6 @@ const BasicForm = async (req, res) => {
 const BasicDetail = async (req, res) => {
   const t = await db.sequelize.transaction();
   const { body } = req;
-  console.log(body);
   try {
     const basic = await Basic.create(
       {
@@ -119,9 +118,42 @@ const BasicDetail = async (req, res) => {
       },
       { transaction: t }
     );
-    const academic = await Academic.create({});
+    console.log(basic.id);
+    const academic = await Academic.create(
+      {
+        course: body.course,
+        board: body.board,
+        year: body.pass,
+        percentage: body.per,
+        candidate_id: basic.id,
+      },
+      { transaction: t }
+    );
+    const exprience = await Exprience.create(
+      {
+        company_name: body.cname,
+        designation: body.wdesig,
+        start_date: body.sdate,
+        end_date: body.edate,
+        candidate_id: basic.id,
+      },
+      { transaction: t }
+    );
+    const language = await Language.create({
+      language_name: body.hindi,
+      reads: body.read || "NO",
+      writes: body.write || "NO",
+      speaks: body.speak || "NO",
+      candidate_id: basic.id,
+    });
+    // const technology = await Technology.create({
+    //   technology_name: body.php,
+    //   rating: body.rating,
+    //   candidate_id: basic.id,
+    // });
     await t.commit();
-    res.redirect("show");
+    res.json(basic);
+    // res.redirect("show");
   } catch (err) {
     res.send({ message: err });
     await t.rollback();
