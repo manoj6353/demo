@@ -41,7 +41,7 @@
           <a href="/show?page=<%=page%>&sort=isActive&typ=<%=typ%>">IsActive</a>
         </th>
       </tr>
-      <% data.forEach(d=> { %>
+      <% rows.forEach(d=> { %>
       <tr>
         <td><%= d.first_name %></td>
         <td><%= d.last_name %></td>
@@ -85,7 +85,7 @@
             <%= i %>
           </a>
         </li>
-        <% } %> <% } %> <% if(Math.ceil(parseInt(total)/parseInt(limit))-5>=
+        <% } %> <% } %> <% if(Math.ceil(parseInt(count)/parseInt(limit))-5>=
         parseInt(page)){ %> <% for(let i=parseInt(page)+1;i<=parseInt(page)+
         5;i++){ %>
         <li class="page-item">
@@ -97,7 +97,7 @@
           </a>
         </li>
         <% } %> <% } else { %> <% for(let
-        i=parseInt(page)+1;i<=Math.ceil(parseInt(total)/parseInt(limit));i++){
+        i=parseInt(page)+1;i<=Math.ceil(parseInt(count)/parseInt(limit));i++){
         %>
         <li class="page-item">
           <a
@@ -119,7 +119,7 @@
         <li class="page-item">
           <a
             class="page-link"
-            href="/show?page=<%=Math.ceil(total/limit)%>&sort=<%=sort%>"
+            href="/show?page=<%=Math.ceil(count/limit)%>&sort=<%=sort%>"
             >>></a
           >
         </li>

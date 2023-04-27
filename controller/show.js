@@ -19,7 +19,8 @@ const show = async (req, res) => {
     },
     { override: true }
   );
-  const data = await User.scope("myscope").findAll();
+  const { rows, count } = await User.scope("myscope").findAndCountAll();
+  // const data = await User.scope("myscope").findAll();
   const total = await User.count(
     {
       where: { deletedAt: null },
@@ -32,7 +33,6 @@ const show = async (req, res) => {
   // );
   // console.log(data);
 
-  console.log(data);
   // where: { deletedAt: null },
   // order: [[sort, typ]],
   // limit: endindex,
@@ -40,8 +40,8 @@ const show = async (req, res) => {
   // });
   // console.log("data", data);
   res.render("show.ejs", {
-    data,
-    total,
+    rows,
+    count,
     page,
     limit: endindex,
     startindex,
