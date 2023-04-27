@@ -15,6 +15,9 @@ app.get("/state", BasicDetails.stateDetail);
 app.get("/fetch-city", BasicDetails.city);
 app.get("/pivot", BasicDetails.InsertPivot);
 app.get("/show", BasicDetails.show);
+app.get("/image", BasicDetails.images);
+app.get("/video", BasicDetails.videos);
+app.get("/tag", BasicDetails.tags);
 
 app.listen(8234, () => {
   console.log("Running on 8234");

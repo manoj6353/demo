@@ -2,15 +2,20 @@ var db = require("../models/index");
 const { Op, DataTypes } = require("sequelize");
 const { name, internet, phone, address } = require("faker");
 const { sequelize } = require("../models/index");
-const academic = require("../models/academic");
-const select_master = require("../models/select_master")(sequelize, DataTypes);
-const option_master = require("../models/option_master")(sequelize, DataTypes);
-const select_option = require("../models/select_option")(sequelize, DataTypes);
-const Basic = require("../models/candidate_basic")(sequelize, DataTypes);
-const Academic = require("../models/academic")(sequelize, DataTypes);
-const Exprience = require("../models/exprience")(sequelize, DataTypes);
-const Language = require("../models/language")(sequelize, DataTypes);
-const Technology = require("../models/technology")(sequelize, DataTypes);
+const academic = require("../models/").academic;
+const select_master = require("../models").select_master;
+const option_master = require("../models").option_master;
+const select_option = require("../models").select_option;
+const Basic = require("../models").candidate_basic;
+const Academic = require("../models").academic;
+const Exprience = require("../models").exprience;
+const Language = require("../models").language;
+const Technology = require("../models").technology;
+const image = require("../models").image;
+const video = require("../models").video;
+const comment = require("../models").comment;
+const tag = require("../models").tag;
+const { tagable } = require("../models");
 
 select_master.hasOne(option_master, { foreignKey: "select_id" });
 option_master.belongsTo(select_master, { foreignKey: "select_id" });
@@ -24,7 +29,76 @@ Language.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
 Basic.hasMany(Technology, { foreignKey: "candidate_id", constraints: false });
 Technology.belongsTo(Basic, { foreignKey: "candidate_id", constraints: false });
 
-// sequelize.sync({ alter: true });
+const images = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const imageinsert = await image.create(
+      {
+        title: "abc",
+        comments: [
+          {
+            commenttype: "image",
+          },
+        ],
+      },
+      { include: comment },
+      { transaction: t }
+    );
+    res.send(imageinsert);
+    await t.commit();
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+  }
+};
+const videos = async (req, res) => {
+  const t = await sequelize.transaction();
+  try {
+    const imageinsert = await video.create(
+      {
+        title: "xyz",
+        comments: [
+          {
+            commenttype: "ssssss",
+          },
+        ],
+      },
+      { include: comment },
+      { transaction: t }
+    );
+    res.send(imageinsert);
+    await t.commit();
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+  }
+};
+
+const tags = async (req, res) => {
+  try {
+    const t = await sequelize.transaction();
+    const taginsert = await tag.create(
+      {
+        name: "abc",
+        images: [
+          {
+            title: "ssssss",
+          },
+        ],
+        videos: [
+          {
+            title: "gsdjhfg",
+          },
+        ],
+      },
+      { include: [{ model: video }, { model: image }] },
+      { transaction: t }
+    );
+    res.send(taginsert);
+  } catch (err) {
+    res.send(err);
+  }
+};
 
 const InsertPivot = async (req, res) => {
   const t = await sequelize.transaction();
@@ -172,4 +246,7 @@ module.exports = {
   city,
   InsertPivot,
   show,
+  images,
+  videos,
+  tags,
 };
