@@ -6,18 +6,16 @@ var adduser = async (req, res) => {
   try {
     var data = [];
     for (let i = 0; i < 10; i++) {
-      const insertdata = {
+      const insertdata = User.create({
         first_name: name.firstName(),
         last_name: name.lastName(),
         email: internet.email(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-      data.push(insertdata);
+      });
+      // data.push(insertdata);
     }
-    await User.bulkCreate(data);
+    res.send("insert");
+    // await User.bulkCreate(data);
     // res.redirect("show");
-    res.send(data);
   } catch (err) {
     res.send(err);
   }
