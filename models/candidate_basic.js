@@ -9,6 +9,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      candidate_basic.hasMany(models.academic, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
+      candidate_basic.hasMany(models.exprience, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
+      candidate_basic.hasMany(models.language, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
+      candidate_basic.hasMany(models.technology, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
     }
   }
   candidate_basic.init(

@@ -12,11 +12,15 @@ module.exports = (sequelize, DataTypes) => {
       tag.belongsToMany(models.image, {
         through: "tagable",
         foreignKey: "tagid",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         constraints: false,
       });
       tag.belongsToMany(models.video, {
         through: "tagable",
         foreignKey: "tagid",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
         constraints: false,
       });
     }

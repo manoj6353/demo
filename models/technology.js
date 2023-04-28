@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      technology.belongsTo(models.candidate_basic, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
     }
   }
   technology.init(

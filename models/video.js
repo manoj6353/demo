@@ -11,10 +11,18 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       video.hasMany(models.comment, {
         foreignKey: "commentid",
+        scope: {
+          commenttype: "video",
+        },
         constraints: false,
       });
       video.belongsToMany(models.tag, {
-        through: "tagable",
+        through: {
+          model: "tagable",
+          scope: {
+            taggabletype: "video",
+          },
+        },
         foreignKey: "taggableid",
         constraints: false,
       });

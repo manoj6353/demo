@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      exprience.belongsTo(models.candidate_basic, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
     }
   }
   exprience.init(

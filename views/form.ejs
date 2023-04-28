@@ -210,10 +210,10 @@
                           required
                         >
                           <% course.forEach(c => { %>
-                          <option value="<%=c.option_master.option_name%>">
-                            <%=c.option_master.option_name%>
+                          <option value="<%#=c.option_master.option_name%>">
+                            <%#=c.option_master.option_name%>
                           </option>
-                          <%}) %>
+                          <% console.log(typeof c.option_masters) %><%}) %>
                         </select>
                       </div>
                       <div class="form-outline mb-4">

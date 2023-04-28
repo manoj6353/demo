@@ -11,10 +11,19 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       image.hasMany(models.comment, {
         foreignKey: "commentid",
+        scope: {
+          commenttype: "image",
+        },
         constraints: false,
       });
+      const table = models.tagable;
       image.belongsToMany(models.tag, {
-        through: "tagable",
+        through: {
+          model: "tagable",
+          scope: {
+            taggabletype: "image",
+          },
+        },
         foreignKey: "taggableid",
         constraints: false,
       });

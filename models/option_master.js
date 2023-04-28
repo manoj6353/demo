@@ -8,6 +8,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      option_master.belongsTo(models.select_master, {
+        foreignKey: "select_id",
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      });
+
       // define association here
     }
   }

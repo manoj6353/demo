@@ -3,9 +3,9 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("tagables", {
-      tagid: {
-        allowNull: false,
-        unique: "tt_unique_constraint",
+      id: {
+        primaryKey: true,
+        autoIncrement: true,
         type: Sequelize.INTEGER,
       },
       taggableid: {
@@ -13,6 +13,10 @@ module.exports = {
       },
       taggabletype: {
         type: Sequelize.STRING,
+      },
+      tagid: {
+        unique: "tt_unique_constraint",
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

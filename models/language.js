@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      language.belongsTo(models.candidate_basic, {
+        foreignKey: "candidate_id",
+        constraints: false,
+      });
     }
   }
   language.init(

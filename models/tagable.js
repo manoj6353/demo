@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       taggableid: DataTypes.INTEGER,
       taggabletype: DataTypes.STRING,
+      tagid: DataTypes.INTEGER,
     },
     {
       sequelize,

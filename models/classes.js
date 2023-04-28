@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class select_option extends Model {
+  class classes extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,23 +9,22 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      classes.belongsToMany(models.student, {
+        through: "enrollment",
+        foreignKey: "classId",
+        onDelete: "cascade",
+        onUpdate: "cascade",
+      });
     }
   }
-  select_option.init(
+  classes.init(
     {
-      select_id: DataTypes.INTEGER,
-      option_id: DataTypes.INTEGER,
-      active: DataTypes.ENUM("success", "panding", "progress"),
+      title: DataTypes.STRING,
     },
     {
-      hooks: {
-        beforeCreate: (user, options) => {
-          user.active = "progress";
-        },
-      },
       sequelize,
-      modelName: "select_option",
+      modelName: "classes",
     }
   );
-  return select_option;
+  return classes;
 };
