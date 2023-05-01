@@ -21,7 +21,7 @@ app.get("/update-many", BasicDetails.updatemany);
 app.get("/show", BasicDetails.show);
 app.get("/image", BasicDetails.images);
 app.get("/imageupdate", BasicDetails.imageupdate);
-app.get("/imagedelete", BasicDetails.imagedelete);
+app.delete("/imagedelete", BasicDetails.imagedelete);
 app.get("/video", BasicDetails.videos);
 app.get("/tag", BasicDetails.tags);
 app.get("/tagupdate", BasicDetails.tagupdate);
