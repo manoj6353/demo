@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  </head>
+  <body>
+    <table id="myTable" class="display">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Position</th>
+          <th>Company Name</th>
+          <th>Age</th>
+          <th>Start Date</th>
+        </tr>
+      </thead>
+      <tbody id="data">
+        <% for(let i=0 ; i< display.length ;i++){%>
+        <tr>
+          <td><%=display[i].first_name%></td>
+          <td><%=display[i].designations[0].position%></td>
+          <td><%=display[i].designations[0].company_name%></td>
+          <td><%=display[i].age%></td>
+          <td><%=display[i].designations[0].start_date%></td>
+        </tr>
+        <% };%>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    let response;
+    $(document).ready(function () {
+      // var info = $("#myTable").DataTable().page.info();
+      // console.log(info);
+      $("#myTable").DataTable({
+        lengthMenu: [
+          [
+            5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85,
+            90, 95, 100, -1,
+          ],
+          [
+            5,
+            10,
+            15,
+            20,
+            25,
+            30,
+            35,
+            40,
+            45,
+            50,
+            55,
+            60,
+            65,
+            70,
+            75,
+            80,
+            85,
+            90,
+            95,
+            100,
+            "All",
+          ],
+        ],
+        language: {
+          info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
+        },
+        paging: true,
+        processing: true,
+        serverSide: true,
+        serverMethod: "get",
+        ajax: {
+          url: "/get-data",
+        },
+        columns: [
+          { name: "first_name", title: "first_name", data: "first_name" },
+          { name: "position", title: "position", data: "position" },
+          { name: "company_name", title: "company_name", data: "company_name" },
+          { name: "age", title: "age", data: "age" },
+          { name: "start_date", title: "start_date", data: "start_date" },
+        ],
+      });
+    });
+
+    function load(data) {
+      response = data;
+    }
+  </script>
+</html>
