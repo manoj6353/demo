@@ -10,6 +10,7 @@ let dob = document.getElementById("dateOfBirth");
 let sdate = document.getElementById("sdate");
 let edate = document.getElementById("edate");
 let age = document.getElementById("age");
+let image = document.getElementById("image");
 let firsterror = document.getElementById("firsterror");
 let lasterror = document.getElementById("lasterror");
 let contacterror = document.getElementById("contacterror");
@@ -18,12 +19,14 @@ let emailerror = document.getElementById("emailerror");
 let companyerror = document.getElementById("companyerror");
 let desigerror = document.getElementById("desigerror");
 let ageerror = document.getElementById("ageerror");
+let imageerror = document.getElementById("imageerror");
 const namepattern = /^[a-zA-Z ]{2,30}$/gm;
 const agepattern = /^[0-9]{2,2}$/gm;
 const exppattern = /^[a-zA-Z0-9\s,'-\/"]*$/;
 const contactpattern = /^\(?([0-9]{3})\)?([0-9]{3})([0-9]{4})$/;
 const addressPattern = /^[a-zA-Z0-9\s,'-\/"]*$/;
 const emailPattern = /\S+@\S+\.\S+/;
+const imagepattern = /\.(jpg|jpeg|png|img)$/i;
 function basicvalidation() {
   let c = 0;
   try {
@@ -91,6 +94,19 @@ function basicvalidation() {
     if (dob.value != "") {
       c++;
     }
+    if (image.value != "") {
+      if (image.value.match(imagepattern)) {
+        image.classList.remove("error");
+        imageerror.innerHTML = "";
+        imageerror.classList.remove("error");
+        c++;
+      } else {
+        image.classList.add("error");
+        imageerror.classList.add("error");
+        imageerror.innerHTML =
+          "Please enter a valid image format(jpg/jpeg/png/img";
+      }
+    }
     if (age.value != "") {
       if (age.value.match(agepattern)) {
         age.classList.remove("error");
@@ -103,7 +119,7 @@ function basicvalidation() {
         ageerror.innerHTML = "Please enter a valid age";
       }
     }
-    if (c == 8) {
+    if (c == 9) {
       return true;
     } else {
       return false;

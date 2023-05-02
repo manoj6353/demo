@@ -29,7 +29,12 @@
                   <h2 class="text-center mb-2">Register Your self</h2>
 
                   <!-- onsubmit="return validation()" -->
-                  <form action="basic-details" method="post" id="regForm">
+                  <form
+                    action="basic-details"
+                    method="post"
+                    enctype="multipart/form-data"
+                    id="regForm"
+                  >
                     <hr />
                     <div class="tab">
                       <legend class="text-center">Basic Details</legend>
@@ -112,7 +117,18 @@
                         ></textarea>
                         <span id="addresserror"></span>
                       </div>
-
+                      <div class="form-outline mb-4">
+                        <label class="form-label" for="image">Image</label
+                        ><input
+                          type="file"
+                          id="image"
+                          name="image"
+                          class="form-control form-control"
+                          required
+                          oninput="basicvalidation()"
+                        />
+                        <span id="imageerror"></span>
+                      </div>
                       <div class="form-outline mb-4">
                         <label class="form-label" for="state">State</label>
                         <select

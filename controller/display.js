@@ -5,6 +5,16 @@ const { basic_detail } = require("../models");
 const { designation } = require("../models");
 const { state } = require("../models");
 const { city } = require("../models");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/image");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
 
 const states = async (req, res) => {
   const t = await sequelize.transaction();
@@ -91,14 +101,13 @@ const fetch = async (req, res) => {
 const data = async (req, res) => {
   const t = await sequelize.transaction();
   try {
-    let { body } = req;
-    console.log(JSON.stringify(body));
-
+    let { body, file } = req;
     const show = await basic_detail.create(
       {
         first_name: body.firstName,
         last_name: body.lastName,
         age: body.age,
+        image: file.filename,
         contact_number: body.contact,
         full_address: body.address,
         city: body.city,
@@ -126,18 +135,6 @@ const data = async (req, res) => {
 
 const show = async (req, res) => {
   try {
-    let start = req.query.start || 1;
-    let length = req.query.length || 5;
-    let order_data = req.query.order;
-
-    if (typeof order_data == "undefined") {
-      let column_name = "basic_details.first_name";
-      let sort_order = "asc";
-    } else {
-      let column_index = req.query.order[0]["column"];
-      let column_name = req.query.columns[column_index]["data"];
-      let column_sort = req.query.order[0]["dir"];
-    }
     const display = await basic_detail.findAll({
       include: { all: true, reqired: true },
     });
@@ -151,7 +148,7 @@ const show = async (req, res) => {
 
 const get_data = async (req, res) => {
   try {
-    const basicDetail = ["first_name", "age"];
+    const basicDetail = ["first_name", "age", "image"];
     const descDetail = ["position", "company_name", "start_date"];
     let draw = req.query.draw;
     let search = req.query.search;
@@ -170,6 +167,8 @@ const get_data = async (req, res) => {
     // else if (descDetail.indexOf(column_name) >= 0) {
     // }
 
+    console.log(column_name);
+
     if (column_name.includes(".")) {
       let columnName = column_name.split(".");
       let table = columnName[0].slice(0, -2);
@@ -180,7 +179,7 @@ const get_data = async (req, res) => {
     const datas = await basic_detail.findAll({
       limit: length,
       offset: start,
-      attributes: ["first_name", "age"],
+      attributes: ["first_name", "age", "image"],
       order: [tableName],
       include: [
         {
@@ -280,4 +279,13 @@ const get_data = async (req, res) => {
   }
 };
 
-module.exports = { states, display, fetch, data, show, get_data };
+module.exports = {
+  states,
+  display,
+  fetch,
+  data,
+  show,
+  get_data,
+  storage,
+  upload,
+};

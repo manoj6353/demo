@@ -10,7 +10,7 @@ const display = require("./controller/display");
 app.get("/state", display.states);
 app.get("/form", display.display);
 app.get("/fetch-city", display.fetch);
-app.post("/basic-details", display.data);
+app.post("/basic-details", display.upload.single("image"), display.data);
 app.get("/", display.show);
 app.get("/get-data", display.get_data);
 

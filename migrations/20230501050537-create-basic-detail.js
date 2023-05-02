@@ -18,6 +18,9 @@ module.exports = {
       age: {
         type: Sequelize.INTEGER,
       },
+      image: {
+        type: Sequelize.INTEGER,
+      },
       contact_number: {
         type: Sequelize.STRING,
       },

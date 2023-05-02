@@ -21,6 +21,7 @@
           <th>Position</th>
           <th>Company Name</th>
           <th>Age</th>
+          <th>Image</th>
           <th>Start Date</th>
         </tr>
       </thead>
@@ -31,6 +32,10 @@
           <td><%=display[i].designations[0].position%></td>
           <td><%=display[i].designations[0].company_name%></td>
           <td><%=display[i].age%></td>
+          <td>
+            <%#=display[i].image%>
+            <img src="../public/image/<%=display[i].image%>" alt="image" />
+          </td>
           <td><%=display[i].designations[0].start_date%></td>
         </tr>
         <% };%>
@@ -67,7 +72,7 @@
             90,
             95,
             100,
-            "all",
+            "All",
           ],
         ],
         language: {
@@ -89,6 +94,7 @@
           { data: "designations[].position" },
           { data: "designations[].company_name" },
           { data: "age" },
+          { data: "image" },
           { data: "designations[].start_date" },
         ],
       });
