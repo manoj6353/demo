@@ -1,5 +1,6 @@
 var db = require("../models");
 const { sequelize } = require("../models");
+const { Op } = require("sequelize");
 const { basic_detail } = require("../models");
 const { designation } = require("../models");
 const { state } = require("../models");
@@ -140,7 +141,6 @@ const show = async (req, res) => {
     const display = await basic_detail.findAll({
       include: { all: true, reqired: true },
     });
-    console.log({ recordTotal: 10, data: display });
     res.render("display", {
       display,
     });
@@ -151,42 +151,132 @@ const show = async (req, res) => {
 
 const get_data = async (req, res) => {
   try {
-    let column_name, column_sort;
-    let start = parseInt(req.query.start) || 1;
-    let length = parseInt(req.query.length) || 5;
+    const basicDetail = ["first_name", "age"];
+    const descDetail = ["position", "company_name", "start_date"];
+    let draw = req.query.draw;
+    let search = req.query.search;
+    let start = parseInt(req.query.start);
+    let length = parseInt(req.query.length);
     let order_data = req.query.order;
 
-    if (typeof order_data == "undefined") {
-      let column_name = "basic_details.first_name";
-      let sort_order = "asc";
-    } else {
-      console.log("===========================================asdfjhasjkagjhs");
-      let column_index = req.query.order[0]["column"];
-      column_name = req.query.columns[column_index]["data"];
-      column_sort = req.query.order[0]["dir"];
+    let column_index = req.query.order[0]["column"];
+    let column_name = req.query.columns[column_index]["data"];
+    let column_sort = req.query.order[0]["dir"];
+
+    let tableName;
+    if (basicDetail.indexOf(column_name) >= 0) {
+      tableName = [sequelize.col(`basic_detail.${column_name}`), column_sort];
     }
-    console.log("=========", column_name);
+    // else if (descDetail.indexOf(column_name) >= 0) {
+    // }
+
+    if (column_name.includes(".")) {
+      let columnName = column_name.split(".");
+      let table = columnName[0].slice(0, -2);
+      tableName = [table, columnName[1], column_sort];
+    }
+    // console.log(tableName);
+    // return;
     const datas = await basic_detail.findAll({
       limit: length,
-      offset: start - 1,
-      order: [[column_name, column_sort]],
-      include: { all: true, reqired: true },
+      offset: start,
+      attributes: ["first_name", "age"],
+      order: [tableName],
+      include: [
+        {
+          model: designation,
+          reqired: true,
+          attributes: ["position", "company_name", "start_date"],
+          where: {
+            [Op.or]: [
+              {
+                "$basic_detail.first_name$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                "$basic_detail.age$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                position: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                company_name: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                start_date: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+            ],
+          },
+        },
+      ],
     });
-    let payload = {};
-    payload.data = [];
-    for (const data of datas) {
-      payload.data.push({
-        first_name: data.first_name,
-        position: data.designations[0].position,
-        company_name: data.designations[0].company_name,
-        age: data.age,
-        start_date: data.designations[0].start_date,
-      });
-    }
-    res.json({ ...payload, recordTotal: 10 });
+    const data = await basic_detail.count({
+      include: [
+        {
+          model: designation,
+          reqired: true,
+          where: {
+            [Op.or]: [
+              {
+                "$basic_detail.first_name$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                "$basic_detail.age$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                position: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                company_name: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                start_date: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+            ],
+          },
+        },
+      ],
+    });
+    // let payload = {};
+    // payload.data = [];
+    // for (const data of datas) {
+    //   payload.data.push({
+    //     first_name: data.first_name,
+    //     position: data.designations[0].position,
+    //     company_name: data.designations[0].company_name,
+    //     age: data.age,
+    //     start_date: data.designations[0].start_date,
+    //   });
+    // }
+    res.json({
+      // ...payload,
+      data: datas,
+      draw,
+      start,
+      recordsFiltered: data,
+      recordsTotal: data,
+    });
   } catch (err) {
-    console.log("skjhdgfsjhdfhjgsjhfgsjdfgjhkdg", err);
-    return {};
+    console.log(err);
   }
 };
 

@@ -40,8 +40,6 @@
   <script>
     let response;
     $(document).ready(function () {
-      // var info = $("#myTable").DataTable().page.info();
-      // console.log(info);
       $("#myTable").DataTable({
         lengthMenu: [
           [
@@ -69,31 +67,31 @@
             90,
             95,
             100,
-            "All",
+            "all",
           ],
         ],
         language: {
           info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
         },
         paging: true,
+        pagingType: "full_numbers",
         processing: true,
         serverSide: true,
         serverMethod: "get",
         ajax: {
           url: "/get-data",
+          // success: function (data) {
+          //   console.log(data);
+          // },
         },
         columns: [
-          { name: "first_name", title: "first_name", data: "first_name" },
-          { name: "position", title: "position", data: "position" },
-          { name: "company_name", title: "company_name", data: "company_name" },
-          { name: "age", title: "age", data: "age" },
-          { name: "start_date", title: "start_date", data: "start_date" },
+          { data: "first_name" },
+          { data: "designations[].position" },
+          { data: "designations[].company_name" },
+          { data: "age" },
+          { data: "designations[].start_date" },
         ],
       });
     });
-
-    function load(data) {
-      response = data;
-    }
   </script>
 </html>
