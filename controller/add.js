@@ -87,6 +87,11 @@ const videos = async (req, res) => {
     const imageinsert = await video.create(
       {
         title: "xyz",
+        comments: [
+          {
+            commenttype: "Video",
+          },
+        ],
       },
       { include: comment },
       { transaction: t }
