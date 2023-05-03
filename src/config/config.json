@@ -4,7 +4,8 @@
     "password": "root",
     "database": "task1",
     "host": "localhost",
-    "dialect": "mysql"
+    "dialect": "mysql",
+    "port": "8765"
   },
   "test": {
     "username": "root",

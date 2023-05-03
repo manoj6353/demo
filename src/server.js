@@ -7,9 +7,12 @@ app.use(bodyParser.json());
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 app.set("views", path.join(__dirname, "/views"));
+const env = process.env.NODE_ENV || "development";
+const config = require(__dirname + "/config/config.json")[env];
+
 const router = require("./routes/routes");
 app.use("/", router);
 
-app.listen(8765, () => {
-  console.log("Running on 8765");
+app.listen(config.port, () => {
+  console.log(`Running on ${config.port}`);
 });

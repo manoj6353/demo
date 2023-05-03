@@ -36,7 +36,7 @@
           <td><%=display[i].age%></td>
           <td><%=display[i].image%></td>
           <td><%=display[i].designations[0].start_date%></td>
-          <td><a onclick="view(`<%=display[i].id%>`)">Delete</a></td>
+          <td><a onclick="view(`<%=display[i].id%>`)">Restore</a></td>
         </tr>
         <% };%>
       </tbody>
@@ -70,7 +70,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-          url: "/get-data",
+          url: "/trash",
           type: "get",
           // success: function (data) {
           //   console.log(data);
@@ -89,7 +89,7 @@
     });
     function view(deleteid) {
       jQuery.ajax({
-        url: "/delete",
+        url: "/restore",
         type: "delete",
         data: { id: deleteid },
         // success: function (data) {
