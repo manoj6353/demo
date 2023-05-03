@@ -163,61 +163,16 @@ const get_data = async (req, res) => {
     let tableName;
     if (basicDetail.indexOf(column_name) >= 0) {
       tableName = [sequelize.col(`basic_detail.${column_name}`), column_sort];
+    } else if (descDetail.indexOf(column_name) >= 0) {
+      tableName = [designation, column_name, column_sort];
     }
-    // else if (descDetail.indexOf(column_name) >= 0) {
+
+    // if (column_name.includes(".")) {
+    //   let columnName = column_name.split(".");
+    //   let table = columnName[0].slice(0, -2);
     // }
-
-    console.log(column_name);
-
-    if (column_name.includes(".")) {
-      let columnName = column_name.split(".");
-      let table = columnName[0].slice(0, -2);
-      tableName = [table, columnName[1], column_sort];
-    }
     // console.log(tableName);
     // return;
-    const datas = await basic_detail.findAll({
-      limit: length,
-      offset: start,
-      attributes: ["first_name", "age", "image"],
-      order: [tableName],
-      include: [
-        {
-          model: designation,
-          reqired: true,
-          attributes: ["position", "company_name", "start_date"],
-          where: {
-            [Op.or]: [
-              {
-                "$basic_detail.first_name$": {
-                  [Op.like]: `%${search.value}%`,
-                },
-              },
-              {
-                "$basic_detail.age$": {
-                  [Op.like]: `%${search.value}%`,
-                },
-              },
-              {
-                position: {
-                  [Op.like]: `%${search.value}%`,
-                },
-              },
-              {
-                company_name: {
-                  [Op.like]: `%${search.value}%`,
-                },
-              },
-              {
-                start_date: {
-                  [Op.like]: `%${search.value}%`,
-                },
-              },
-            ],
-          },
-        },
-      ],
-    });
     const data = await basic_detail.count({
       include: [
         {
@@ -255,24 +210,86 @@ const get_data = async (req, res) => {
         },
       ],
     });
-    // let payload = {};
-    // payload.data = [];
-    // for (const data of datas) {
-    //   payload.data.push({
-    //     first_name: data.first_name,
-    //     position: data.designations[0].position,
-    //     company_name: data.designations[0].company_name,
-    //     age: data.age,
-    //     start_date: data.designations[0].start_date,
-    //   });
-    // }
+
+    if (length == -1) {
+      length = data;
+    }
+
+    const { rows, count } = await basic_detail.findAndCountAll({
+      limit: length,
+      offset: start,
+      attributes: ["first_name", "age", "image"],
+      order: [tableName],
+      include: [
+        {
+          model: designation,
+          reqired: true,
+          attributes: ["position", "company_name", "start_date"],
+          where: {
+            [Op.or]: [
+              {
+                "$basic_detail.first_name$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                "$basic_detail.age$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                "$basic_detail.image$": {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                position: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                company_name: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+              {
+                start_date: {
+                  [Op.like]: `%${search.value}%`,
+                },
+              },
+            ],
+          },
+        },
+      ],
+    });
+
+    // console.log(count);
+    // return;
+    let payload = {};
+    payload.data = [];
+    for (const data of rows) {
+      let images;
+      if (data.image != null) {
+        images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
+      } else {
+        images = "";
+      }
+      payload.data.push({
+        first_name: data.first_name,
+        position: data.designations[0].position,
+        company_name: data.designations[0].company_name,
+        image: images,
+        age: data.age,
+        start_date: data.designations[0].start_date,
+      });
+    }
     res.json({
-      // ...payload,
-      data: datas,
+      ...payload,
+      // data: datas,
       draw,
       start,
-      recordsFiltered: data,
-      recordsTotal: data,
+      recordsFiltered: count,
+      recordsTotal: count,
     });
   } catch (err) {
     console.log(err);

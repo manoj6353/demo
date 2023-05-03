@@ -32,10 +32,7 @@
           <td><%=display[i].designations[0].position%></td>
           <td><%=display[i].designations[0].company_name%></td>
           <td><%=display[i].age%></td>
-          <td>
-            <%#=display[i].image%>
-            <img src="../public/image/<%=display[i].image%>" alt="image" />
-          </td>
+          <td><%=display[i].image%></td>
           <td><%=display[i].designations[0].start_date%></td>
         </tr>
         <% };%>
@@ -78,6 +75,12 @@
         language: {
           info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
         },
+        // columnDefs: [
+        //   {
+        //     targets: [1, 3],
+        //     orderable: false,
+        //   },
+        // ],
         paging: true,
         pagingType: "full_numbers",
         processing: true,
@@ -91,11 +94,11 @@
         },
         columns: [
           { data: "first_name" },
-          { data: "designations[].position" },
-          { data: "designations[].company_name" },
+          { data: "position" },
+          { data: "company_name" },
           { data: "age" },
           { data: "image" },
-          { data: "designations[].start_date" },
+          { data: "start_date" },
         ],
       });
     });
