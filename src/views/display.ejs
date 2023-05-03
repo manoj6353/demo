@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="/css/add.css" />
     <link
       rel="stylesheet"
       href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
@@ -36,7 +37,10 @@
           <td><%=display[i].age%></td>
           <td><%=display[i].image%></td>
           <td><%=display[i].designations[0].start_date%></td>
-          <td><a onclick="view(`<%=display[i].id%>`)">Delete</a></td>
+          <td>
+            <a onclick="view(`<%=display[i].id%>`)">Delete</a>
+            <a onclick="update(`<%=display[i].id%>`)">Update</a>
+          </td>
         </tr>
         <% };%>
       </tbody>
@@ -59,12 +63,12 @@
         language: {
           info: "Display _PAGE_ to _END_ of _TOTAL_ entries",
         },
-        // columnDefs: [
-        //   {
-        //     targets: [1, 3],
-        //     orderable: false,
-        //   },
-        // ],
+        columnDefs: [
+          {
+            targets: [6],
+            orderable: false,
+          },
+        ],
         paging: true,
         pagingType: "full_numbers",
         processing: true,
@@ -83,7 +87,7 @@
           { data: "age" },
           { data: "image" },
           { data: "start_date" },
-          { data: "id" },
+          { data: "action" },
         ],
       });
     });
@@ -97,6 +101,16 @@
         // },
       });
       window.location.reload();
+    }
+    function update(updateId) {
+      jQuery.ajax({
+        url: "/update",
+        type: "get",
+        data: { id: updateId },
+        // success: function (data) {
+        //   console.log(data);
+        // },
+      });
     }
   </script>
 </html>

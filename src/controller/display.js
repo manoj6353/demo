@@ -25,43 +25,7 @@ const states = async (req, res) => {
           cities: [
             { city_name: "Ahmedabad" },
             { city_name: "Vadodra" },
-            { city_name: "Surat" },
-            { city_name: "Valsad" },
-            { city_name: "Rajkot" },
             { city_name: "Bhavnagar" },
-          ],
-        },
-        {
-          state_name: "Rajasthan",
-          cities: [
-            { city_name: "Jaipur" },
-            { city_name: "Kota" },
-            { city_name: "Sikar" },
-            { city_name: "Ajmer" },
-            { city_name: "Udaipur" },
-            { city_name: "Bhilwara" },
-          ],
-        },
-        {
-          state_name: "Bihar",
-          cities: [
-            { city_name: "Patna" },
-            { city_name: "Gaya" },
-            { city_name: "Muzaffarpur" },
-            { city_name: "Begusarai" },
-            { city_name: "Purnia" },
-            { city_name: "Buxar" },
-          ],
-        },
-        {
-          state_name: "Maharastra",
-          cities: [
-            { city_name: "Pune" },
-            { city_name: "Nashik" },
-            { city_name: "Mumbai" },
-            { city_name: "Thane" },
-            { city_name: "Nagpur" },
-            { city_name: "Kolhapur" },
           ],
         },
       ],
@@ -109,6 +73,7 @@ const data = async (req, res) => {
         image: file.filename,
         contact_number: body.contact,
         full_address: body.address,
+        state: body.state,
         city: body.city,
         email: body.email,
         dob: body.dateOfBirth,
@@ -226,7 +191,8 @@ const getdata = async (req, res) => {
     payload.data = [];
     for (const data of rows) {
       let images;
-      let view = `<a onclick="view(${data.id})">Delete</a>`;
+      let del = `<a onclick="view(${data.id})">Delete</a> / 
+      <a onclick="update(${data.id})">Update</a>`;
       if (data.image != null) {
         images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
       } else {
@@ -238,7 +204,7 @@ const getdata = async (req, res) => {
         company_name: data.designations[0].company_name,
         image: images,
         age: data.age,
-        id: view,
+        action: del,
         start_date: data.designations[0].start_date,
       });
     }
@@ -305,17 +271,17 @@ const trash = async (req, res) => {
     const isAjax = req.xhr;
     const { rows } = await db.basic_detail.findAndCountAll({
       attributes: ["first_name", "age", "image", "id"],
-      where: { deletedAt: { [Op.ne]: null } },
       include: [
         {
           model: db.designation,
+          required: true,
           attributes: ["position", "company_name", "start_date"],
+          paranoid: false,
+          where: { deletedAt: { [Op.ne]: null } },
         },
       ],
       paranoid: false,
     });
-    // console.log(rows);
-    // return;
     if (isAjax) {
       const { query } = req;
       const basicDetail = ["first_name", "age", "image", "id"];
@@ -343,7 +309,7 @@ const trash = async (req, res) => {
         offset: start,
         attributes: ["first_name", "age", "image", "id"],
         order: [tableName],
-        where: { deletedAt: { [Op.ne]: null } },
+        // where: { deletedAt: { [Op.ne]: null } },
         include: [
           {
             model: db.designation,
@@ -381,7 +347,9 @@ const trash = async (req, res) => {
                   },
                 },
               ],
+              deletedAt: { [Op.ne]: null },
             },
+            paranoid: false,
           },
         ],
         paranoid: false,
@@ -390,7 +358,8 @@ const trash = async (req, res) => {
       payload.data = [];
       for (const data of rows) {
         let images;
-        let view = `<a onclick="view(${data.id})">Restore</a>`;
+        let del = `<a onclick="view(${data.id})">Delete</a> / 
+      <a onclick="update(${data.id})">Update</a>`;
         if (data.image != null) {
           images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
         } else {
@@ -402,7 +371,7 @@ const trash = async (req, res) => {
           company_name: data.designations[0].company_name,
           image: images,
           age: data.age,
-          id: view,
+          action: del,
           start_date: data.designations[0].start_date,
         });
       }
@@ -423,8 +392,22 @@ const trash = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  const { id } = req.query;
+  try {
+    const data = await db.basic_detail.findOne({
+      where: { id: id },
+      include: [{ model: db.designation }],
+    });
+    res.render("updateform", { data });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   states,
+  update,
   display,
   fetch,
   data,

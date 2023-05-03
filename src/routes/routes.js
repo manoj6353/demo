@@ -12,5 +12,6 @@ route.get("/get-data", display.getdata);
 route.delete("/delete", display.deletedata);
 route.delete("/restore", display.restore);
 route.get("/trash", display.trash);
+route.get("/update", display.update);
 
 module.exports = route;

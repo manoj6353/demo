@@ -5,7 +5,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "../public")));
 app.set("views", path.join(__dirname, "/views"));
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/config/config.json")[env];
