@@ -97,6 +97,44 @@ const data = async (req, res) => {
   }
 };
 
+const dataupdate = async (req, res) => {
+  const t = await db.sequelize.transaction();
+  try {
+    let { body, file } = req;
+    const show = await db.basic_detail.update(
+      {
+        first_name: body.firstName,
+        last_name: body.lastName,
+        age: body.age,
+        image: file ? file.filename : null,
+        contact_number: body.contact,
+        full_address: body.address,
+        state: body.state,
+        city: body.city,
+        email: body.email,
+        dob: body.dateOfBirth,
+        gender: body.gender,
+      },
+      { where: { id: body.basicId } }
+    );
+    const designation = db.designation.update(
+      {
+        position: body.wdesig,
+        company_name: body.cname,
+        start_date: body.sdate,
+        end_date: body.edate,
+      },
+      { where: { basic_id: body.basicId } },
+      { transaction: t }
+    );
+    await t.commit();
+    res.redirect("/");
+  } catch (err) {
+    console.log(err);
+    await t.rollback();
+  }
+};
+
 const show = async (req, res) => {
   try {
     const display = await db.basic_detail.findAll({
@@ -418,6 +456,7 @@ module.exports = {
   getdata,
   deletedata,
   restore,
+  dataupdate,
   storage,
   upload,
 };

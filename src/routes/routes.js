@@ -7,6 +7,11 @@ route.get("/state", display.states);
 route.get("/form", display.display);
 route.get("/fetch-city", display.fetch);
 route.post("/basic-details", display.upload.single("image"), display.data);
+route.post(
+  "/update/basic-details",
+  display.upload.single("image"),
+  display.dataupdate
+);
 route.get("/", display.show);
 route.get("/get-data", display.getdata);
 route.delete("/delete", display.deletedata);

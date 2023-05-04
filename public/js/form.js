@@ -106,6 +106,8 @@ function basicvalidation() {
         imageerror.innerHTML =
           "Please enter a valid image format(jpg/jpeg/png/img";
       }
+    } else {
+      c++;
     }
     if (age.value != "") {
       if (age.value.match(agepattern)) {

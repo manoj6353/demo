@@ -138,6 +138,13 @@
                           required
                           oninput="basicvalidation()"
                         />
+                        <% if(data.image){%>
+                        <img
+                          src="/image/<%=data.image%>"
+                          width="100px"
+                          height="100px"
+                        />
+                        <%}%>
                         <span id="imageerror"></span>
                       </div>
                       <div class="form-outline mb-4">
@@ -262,6 +269,7 @@
                           name="cname"
                           id="cname"
                           class="form-control form-control"
+                          value="<%=data.designations[0].company_name%>"
                           oninput="expriencevalidation()"
                           required
                         />
@@ -275,6 +283,7 @@
                           id="wdesig"
                           class="form-control form-control"
                           oninput="expriencevalidation()"
+                          value="<%=data.designations[0].position%>"
                           required
                         />
                         <span id="desigerror"></span>
