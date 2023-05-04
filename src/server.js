@@ -10,6 +10,11 @@ app.set("views", path.join(__dirname, "/views"));
 const env = process.env.NODE_ENV || "development";
 const config = require(__dirname + "/config/config.json")[env];
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("../swagger.json");
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 const router = require("./routes/routes");
 app.use("/", router);
 

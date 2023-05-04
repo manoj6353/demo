@@ -1,0 +1,33 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "description": "",
+    "version": "1.0"
+  },
+  "produces": ["application/x-www-form-urlencoded"],
+  "host": "localhost:8765",
+  "basePath": "/",
+  "paths": {
+    "/": {
+      "get": {
+        "x-swagger-router-controller": "middleware-name1",
+        "operationId": "swagTest",
+        "tags": ["/"],
+        "description": "Show all data from Basic Details and Designations",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/trash" :{
+      "get":{
+        "x-swagger-router-controller": "middleware-name1",
+        "operationId": "swagTest",
+        "tags": ["/trash"],
+        "description": "Display those data deleted from Basic Details and Designations",
+        "parameters": [],
+        "responses": {}
+      }
+    }
+  }
+}
