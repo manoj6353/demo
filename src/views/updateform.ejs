@@ -12,12 +12,7 @@
     />
     <link rel="stylesheet" href="/css/add.css" />
   </head>
-  <body>
-    <!-- <nav class="navbar navbar-expand-lg navbar-dark gradient-custom-4">
-      <div class="container-fluid">
-        <a class="navbar-brand text-dark" href="#">Register</a>
-      </div>
-    </nav> -->
+  <body onload="fetchcity()">
     <%- include('header'); -%>
     <section class="bg-image mt-5">
       <div class="d-flex align-items-center">
@@ -37,6 +32,16 @@
                     <div class="tab">
                       <legend class="text-center">Basic Details</legend>
                       <div class="form-outline mb-4">
+                        <input
+                          type="hidden"
+                          id="basicId"
+                          name="basicId"
+                          class="form-control form-control"
+                          value="<%=data.id%>"
+                          required
+                        />
+                      </div>
+                      <div class="form-outline mb-4">
                         <label class="form-label" for="firstName"
                           >First Name</label
                         ><input
@@ -44,6 +49,7 @@
                           id="firstName"
                           name="firstName"
                           class="form-control form-control"
+                          value="<%=data.first_name%>"
                           required
                           oninput="basicvalidation()"
                           onchange="toupper()"
@@ -60,6 +66,7 @@
                           name="lastName"
                           class="form-control form-control"
                           required
+                          value="<%=data.last_name%>"
                           oninput="basicvalidation()"
                           onchange="toupper()"
                         />
@@ -73,6 +80,7 @@
                           name="age"
                           class="form-control form-control"
                           required
+                          value="<%=data.age%>"
                           oninput="basicvalidation()"
                         />
                         <span id="ageerror"></span>
@@ -86,6 +94,7 @@
                           name="email"
                           class="form-control form-control"
                           required
+                          value="<%=data.email%>"
                           oninput="basicvalidation()"
                         />
                         <span id="emailerror"></span>
@@ -97,6 +106,7 @@
                           type="text"
                           id="contact"
                           name="contact"
+                          value="<%=data.contact_number%>"
                           class="form-control form-control"
                           required
                           oninput="basicvalidation()"
@@ -112,7 +122,9 @@
                           class="form-control form-control"
                           required
                           oninput="basicvalidation()"
-                        ></textarea>
+                        >
+<%=data.full_address%></textarea
+                        >
                         <span id="addresserror"></span>
                       </div>
                       <div class="form-outline mb-4">
@@ -121,6 +133,7 @@
                           type="file"
                           id="image"
                           name="image"
+                          value="<%=data.image%>"
                           class="form-control form-control"
                           required
                           oninput="basicvalidation()"
@@ -135,21 +148,40 @@
                           name="state"
                           required
                           onchange="fetchcity()"
-                        ></select>
-                        <!-- <script>
+                        >
+                          <% states.forEach(s => { %> <% if(s.state_name ==
+                          data.state) {%>
+                          <option
+                            id="<%=s.id%>"
+                            value="<%=s.state_name%>"
+                            selected
+                          >
+                            <%=s.state_name%>
+                          </option>
+                          <% } else {%>
+                          <option id="<%=s.id%>" value="<%=s.state_name%>">
+                            <%=s.state_name%>
+                          </option>
+                          <%} }); %>
+                        </select>
+                        <script>
                           async function fetchcity() {
                             let state = document.querySelector("#state");
                             const result = await fetch(
-                              `fetch-city?id=${state[state.selectedIndex].id}`
+                              `/fetch-city?id=${state[state.selectedIndex].id}`
                             );
                             const data = await result.json();
                             let opt = "";
                             data.forEach((d) => {
-                              opt += `<option value="${d.city_name}">${d.city_name}</option>`;
+                              if (d.city_name == data.city_name) {
+                                opt += `<option value="${d.city_name}" selected>${d.city_name}</option>`;
+                              } else {
+                                opt += `<option value="${d.city_name}">${d.city_name}</option>`;
+                              }
                               document.querySelector(".city").innerHTML = opt;
                             });
                           }
-                        </script> -->
+                        </script>
                       </div>
 
                       <div class="form-outline mb-4">
@@ -165,10 +197,12 @@
                       <div class="form-outline mb-4">
                         <label class="form-label" for="dateOfBirth"
                           >Date of Birth</label
-                        ><input
+                        >
+                        <input
                           type="date"
                           id="dateOfBirth"
                           name="dateOfBirth"
+                          value="<%=data.dob%>"
                           class="form-control form-control"
                           required
                         />

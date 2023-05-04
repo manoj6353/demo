@@ -192,8 +192,8 @@ const getdata = async (req, res) => {
     for (const data of rows) {
       let images;
       let del = `<a onclick="view(${data.id})" id="delete">Delete</a> 
-      <a onclick="update(${data.id})" id="update">Update</a>`;
-      // <a href="/update/:${data.id}" id="update">Update</a>`;
+      <a href="/update/?id=${data.id}" id="update">Update</a>`;
+      // <a onclick="update(${data.id})" id="update">Update</a>`;
       if (data.image != null) {
         images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
       } else {
@@ -396,12 +396,12 @@ const trash = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.query;
   try {
+    const states = await db.state.findAll({});
     const data = await db.basic_detail.findOne({
       where: { id: id },
       include: [{ model: db.designation }],
     });
-    // res.render("updateform", { data });
-    res.json(data);
+    res.render("updateform", { data, states });
   } catch (err) {
     console.log(err);
   }

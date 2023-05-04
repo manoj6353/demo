@@ -28,22 +28,7 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody id="data">
-        <% for(let i=0 ; i< display.length ;i++){%>
-        <tr>
-          <td><%=display[i].first_name%></td>
-          <td><%=display[i].designations[0].position%></td>
-          <td><%=display[i].designations[0].company_name%></td>
-          <td><%=display[i].age%></td>
-          <td><%=display[i].image%></td>
-          <td><%=display[i].designations[0].start_date%></td>
-          <td>
-            <a onclick="view(`<%=display[i].id%>`)">Delete</a>
-            <a onclick="update(`<%=display[i].id%>`)">Update</a>
-          </td>
-        </tr>
-        <% };%>
-      </tbody>
+      <tbody id="data"></tbody>
     </table>
   </body>
   <script>
