@@ -92,24 +92,25 @@
       });
     });
     function view(deleteid) {
-      jQuery.ajax({
-        url: "/delete",
-        type: "delete",
-        data: { id: deleteid },
-        // success: function (data) {
-        //   console.log(data);
-        // },
-      });
-      window.location.reload();
+      const x = confirm("Are you sure you want to delete?");
+      if (x) {
+        jQuery.ajax({
+          url: "/delete",
+          type: "delete",
+          data: { id: deleteid },
+          // success: function (data) {
+          //   console.log(data);
+          // },
+        });
+        window.location.reload();
+      }
     }
     function update(updateId) {
       jQuery.ajax({
         url: "/update",
         type: "get",
         data: { id: updateId },
-        // success: function (data) {
-        //   console.log(data);
-        // },
+        success: function (data) {},
       });
     }
   </script>

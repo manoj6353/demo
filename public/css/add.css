@@ -33,3 +33,15 @@
 a{
   cursor:pointer;
 }
+
+#delete{
+  background-color: bisque;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-right: 20px;
+}
+#update{
+  background-color: lightgrey;
+  padding: 5px 10px;
+  border-radius: 10px;
+}

@@ -88,15 +88,18 @@
       });
     });
     function view(deleteid) {
-      jQuery.ajax({
-        url: "/restore",
-        type: "delete",
-        data: { id: deleteid },
-        // success: function (data) {
-        //   console.log(data);
-        // },
-      });
-      window.location.reload();
+      const x = confirm("Are you sure you want to Restore?");
+      if (x) {
+        jQuery.ajax({
+          url: "/restore",
+          type: "delete",
+          data: { id: deleteid },
+          // success: function (data) {
+          //   console.log(data);
+          // },
+        });
+        window.location.reload();
+      }
     }
   </script>
 </html>

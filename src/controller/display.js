@@ -191,8 +191,9 @@ const getdata = async (req, res) => {
     payload.data = [];
     for (const data of rows) {
       let images;
-      let del = `<a onclick="view(${data.id})">Delete</a> / 
-      <a onclick="update(${data.id})">Update</a>`;
+      let del = `<a onclick="view(${data.id})" id="delete">Delete</a> 
+      <a onclick="update(${data.id})" id="update">Update</a>`;
+      // <a href="/update/:${data.id}" id="update">Update</a>`;
       if (data.image != null) {
         images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
       } else {
@@ -358,8 +359,8 @@ const trash = async (req, res) => {
       payload.data = [];
       for (const data of rows) {
         let images;
-        let del = `<a onclick="view(${data.id})">Delete</a> / 
-      <a onclick="update(${data.id})">Update</a>`;
+        let del = `<a onclick="view(${data.id})" id="delete">Restore</a> 
+      <a onclick="update(${data.id})" id="update">Update</a>`;
         if (data.image != null) {
           images = `<img src="/image/${data.image}" alt="image" height= "100px" width="100px">`;
         } else {
@@ -399,7 +400,8 @@ const update = async (req, res) => {
       where: { id: id },
       include: [{ model: db.designation }],
     });
-    res.render("updateform", { data });
+    // res.render("updateform", { data });
+    res.json(data);
   } catch (err) {
     console.log(err);
   }
