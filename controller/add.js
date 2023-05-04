@@ -51,7 +51,6 @@ const imageupdate = async (req, res) => {
         title: "Bajiya",
       },
       { where: { id: 30 } },
-      { include: comment },
       { transaction: t }
     );
     console.log(imageinsert);
@@ -283,7 +282,6 @@ const manyupdate = async (req, res) => {
         select_name: address.state(),
       },
       { where: { id: 3 } },
-      { include: [option_master] },
       { transaction: t }
     );
     res.json(select);
