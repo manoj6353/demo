@@ -3,6 +3,7 @@ const { Op } = require("sequelize");
 const { sequelize } = require("../models");
 const db = require("../models");
 const { repo } = require("../repository/demo");
+const joi = require("joi");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -62,18 +63,28 @@ const fetch = async (req, res) => {
 const data = async (req, res) => {
   try {
     let { body, file } = req;
-    await repo.insert(body, file);
-    res.redirect("/");
+
+    const data = await repo.insert(body, file);
+    if (data.error) {
+      res.json(data.error.details);
+    } else {
+      res.redirect("/");
+    }
   } catch (err) {
-    res.status(400).json({ message: err });
+    console.log(err);
+    res.status(400).json({ error: err });
   }
 };
 
 const dataupdate = async (req, res) => {
   try {
     let { body, file } = req;
-    await repo.update(body, file);
-    res.redirect("/");
+    const data = await repo.update(body, file);
+    if (data.error) {
+      res.json(data.error.details);
+    } else {
+      res.redirect("/");
+    }
   } catch (err) {
     res.status(400).json({ message: err });
   }

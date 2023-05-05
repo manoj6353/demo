@@ -1,6 +1,7 @@
 const { Op } = require("sequelize");
 const db = require("../models");
 const { sequelize } = require("../models");
+const joi = require("joi");
 
 const repo = {};
 repo.findonestate = async (id) => {
@@ -23,35 +24,61 @@ repo.findallstate = async () => {
   }
 };
 
+function validation(body) {
+  const JoiSchema = joi.object({
+    firstName: joi.string().required(),
+    lastName: joi.string().required(),
+    age: joi.number().required(),
+    contact: joi.number().required(),
+    address: joi.string().required(),
+    state: joi.string().required(),
+    city: joi.string().required(),
+    email: joi.string().email().min(5).max(50).required(),
+    dateOfBirth: joi.date().max("01-01-2002").iso().required(),
+    gender: joi.string().required(),
+    wdesig: joi.string().required(),
+    cname: joi.string().required(),
+    sdate: joi.date().required(),
+    edate: joi.date().required(),
+  });
+  const schema = JoiSchema.validate(body);
+  return schema;
+}
+
 repo.insert = async (body, file) => {
   const t = await db.sequelize.transaction();
   try {
-    await db.basic_detail.create(
-      {
-        first_name: body.firstName,
-        last_name: body.lastName,
-        age: body.age,
-        image: file ? file.filename : null,
-        contact_number: body.contact,
-        full_address: body.address,
-        state: body.state,
-        city: body.city,
-        email: body.email,
-        dob: body.dateOfBirth,
-        gender: body.gender,
+    const schema = validation(body);
+    if (schema.error) {
+      return schema;
+    } else {
+      const datas = await db.basic_detail.create(
+        {
+          first_name: body.firstName,
+          last_name: body.lastName,
+          age: body.age,
+          image: file ? file.filename : null,
+          contact_number: body.contact,
+          full_address: body.address,
+          state: body.state,
+          city: body.city,
+          email: body.email,
+          dob: body.dateOfBirth,
+          gender: body.gender,
 
-        designations: {
-          position: body.wdesig,
-          company_name: body.cname,
-          start_date: body.sdate,
-          end_date: body.edate,
+          designations: {
+            position: body.wdesig,
+            company_name: body.cname,
+            start_date: body.sdate,
+            end_date: body.edate,
+          },
         },
-      },
-      { include: { all: true } },
-      { transaction: t }
-    );
-    await t.commit();
-    return;
+        { include: { all: true } },
+        { transaction: t }
+      );
+      await t.commit();
+      return datas;
+    }
   } catch (err) {
     console.log(err);
     await t.rollback();
@@ -61,34 +88,39 @@ repo.insert = async (body, file) => {
 repo.update = async (body, file) => {
   const t = await db.sequelize.transaction();
   try {
-    await db.basic_detail.update(
-      {
-        first_name: body.firstName,
-        last_name: body.lastName,
-        age: body.age,
-        image: file ? file.filename : null,
-        contact_number: body.contact,
-        full_address: body.address,
-        state: body.state,
-        city: body.city,
-        email: body.email,
-        dob: body.dateOfBirth,
-        gender: body.gender,
-      },
-      { where: { id: body.basicId } }
-    );
-    await db.designation.update(
-      {
-        position: body.wdesig,
-        company_name: body.cname,
-        start_date: body.sdate,
-        end_date: body.edate,
-      },
-      { where: { basic_id: body.basicId } },
-      { transaction: t }
-    );
-    await t.commit();
-    return;
+    const schema = validation(body);
+    if (schema.error) {
+      return schema;
+    } else {
+      const data = await db.basic_detail.update(
+        {
+          first_name: body.firstName,
+          last_name: body.lastName,
+          age: body.age,
+          image: file ? file.filename : null,
+          contact_number: body.contact,
+          full_address: body.address,
+          state: body.state,
+          city: body.city,
+          email: body.email,
+          dob: body.dateOfBirth,
+          gender: body.gender,
+        },
+        { where: { id: body.basicId } }
+      );
+      await db.designation.update(
+        {
+          position: body.wdesig,
+          company_name: body.cname,
+          start_date: body.sdate,
+          end_date: body.edate,
+        },
+        { where: { basic_id: body.basicId } },
+        { transaction: t }
+      );
+      await t.commit();
+      return data;
+    }
   } catch (err) {
     console.log(err);
     await t.rollback();
