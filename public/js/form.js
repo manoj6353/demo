@@ -54,18 +54,18 @@ function basicvalidation() {
         lasterror.innerHTML = "Please enter a valid last name";
       }
     }
-    // if (email.value != "") {
-    //   if (email.value.match(emailPattern)) {
-    //     email.classList.remove("error");
-    //     emailerror.innerHTML = "";
-    //     emailerror.classList.remove("error");
-    //     c++;
-    //   } else {
-    //     email.classList.add("error");
-    //     emailerror.classList.add("error");
-    //     emailerror.innerHTML = "Please enter a valid email";
-    //   }
-    // }
+    if (email.value != "") {
+      if (email.value.match(emailPattern)) {
+        email.classList.remove("error");
+        emailerror.innerHTML = "";
+        emailerror.classList.remove("error");
+        c++;
+      } else {
+        email.classList.add("error");
+        emailerror.classList.add("error");
+        emailerror.innerHTML = "Please enter a valid email";
+      }
+    }
     if (contact.value != "") {
       if (contact.value.match(contactpattern)) {
         contact.classList.remove("error");
@@ -121,7 +121,7 @@ function basicvalidation() {
         ageerror.innerHTML = "Please enter a valid age";
       }
     }
-    if (c == 8) {
+    if (c == 9) {
       return true;
     } else {
       return false;

@@ -26,18 +26,49 @@ repo.findallstate = async () => {
 
 function validation(body) {
   const JoiSchema = joi.object({
-    firstName: joi.string().required(),
-    lastName: joi.string().required(),
-    age: joi.number().required(),
-    contact: joi.number().required(),
-    address: joi.string().required(),
+    firstName: joi
+      .string()
+      .regex(/^[a-zA-Z ]{2,30}$/gm)
+      .required(),
+    lastName: joi
+      .string()
+      .regex(/^[a-zA-Z ]{2,30}$/gm)
+      .required(),
+    age: joi
+      .number()
+      .regex(/^[0-9]{2,2}$/gm)
+      .required(),
+    contact: joi
+      .number()
+      .regex(/^\(?([0-9]{3})\)?([0-9]{3})([0-9]{4})$/)
+      .required(),
+    address: joi
+      .string()
+      .regex(/^[a-zA-Z0-9\s,'-\/"]*$/)
+      .required(),
     state: joi.string().required(),
     city: joi.string().required(),
-    email: joi.string().email().min(5).max(50).required(),
+    image: joi
+      .string()
+      .regex(/\.(jpg|jpeg|png|img)$/i)
+      .optional(),
+    email: joi
+      .string()
+      .regex(/\S+@\S+\.\S+/)
+      .email()
+      .min(5)
+      .max(50)
+      .required(),
     dateOfBirth: joi.date().max("01-01-2002").iso().required(),
     gender: joi.string().required(),
-    wdesig: joi.string().required(),
-    cname: joi.string().required(),
+    wdesig: joi
+      .string()
+      .regex(/^[a-zA-Z0-9\s,'-\/"]*$/)
+      .required(),
+    cname: joi
+      .string()
+      .regex(/^[a-zA-Z0-9\s,'-\/"]*$/)
+      .required(),
     sdate: joi.date().required(),
     edate: joi.date().required(),
   });
